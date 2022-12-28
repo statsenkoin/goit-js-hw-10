@@ -1,6 +1,7 @@
 import './css/styles.css';
 import debounce from 'lodash.debounce';
 import { fetchCountries } from './js/fetchCountries';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 // const DEBOUNCE_DELAY = 300;
 const DEBOUNCE_DELAY = 1000;
@@ -18,14 +19,13 @@ function onSearchInput(e) {
   if (!inputStr) {
     updateMarkup('', '');
   } else {
-    fetchCountries(inputStr).then(createMarkup).catch(createErrorMessage);
+    fetchCountries(inputStr).then(createMarkup).catch(createInfoMessage);
   }
 }
 
 function createMarkup(data) {
   if (data.length > 10) {
-    str = 'Too many matches found. Please enter a more specific name.';
-    createErrorMessage(str);
+    createInfoMessage(str);
   } else if (data.length === 1) {
     createCountryInfoMarkup(data);
   } else {
@@ -44,7 +44,6 @@ function createCountryInfoMarkup(country) {
       languages,
     },
   ] = country;
-
   const langsStr = languages.map(({ name }) => name).join(', ');
 
   const markup = `<div class="country-wrapper">
@@ -54,6 +53,7 @@ function createCountryInfoMarkup(country) {
       <h2>Capital: <span>${capital}</span></h2>
       <h2>Population: <span>${population}</span></h2>
       <h2>Languages: <span>${langsStr}</span></h2>`;
+
   updateMarkup('', markup);
 }
 
@@ -67,11 +67,21 @@ function createCountryListMarkup(countriesList) {
         </li>`
     )
     .join('');
+
   updateMarkup(markup, '');
 }
 
-function createErrorMessage(str) {
+function createInfoMessage(str) {
+  strTooMany = 'Too many matches found. Please enter a more specific name.';
+  strErr = 'Oops, there is no country with that name';
+  Notify.failure('Qui timide rogat docet negare');
+  Notify.info('Cogito ergo sum');
   console.log(str);
+}
+
+function updateMarkup(countryListMarkup, countryInfoMarkup) {
+  countryInfoRef.innerHTML = countryInfoMarkup;
+  countryListRef.innerHTML = countryListMarkup;
 }
 
 function addStyles() {
@@ -85,9 +95,4 @@ function addStyles() {
         span {font-weight: 400;}
     </style>`;
   document.head.insertAdjacentHTML('beforeend', extraStyles);
-}
-
-function updateMarkup(countryListMarkup, countryInfoMarkup) {
-  countryInfoRef.innerHTML = countryInfoMarkup;
-  countryListRef.innerHTML = countryListMarkup;
 }
