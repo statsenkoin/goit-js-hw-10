@@ -19,13 +19,13 @@ function onSearchInput(e) {
   if (!inputStr) {
     updateMarkup('', '');
   } else {
-    fetchCountries(inputStr).then(createMarkup).catch(createInfoMessage);
+    fetchCountries(inputStr).then(createMarkup).catch(createErrorMessage);
   }
 }
 
 function createMarkup(data) {
   if (data.length > 10) {
-    createInfoMessage(str);
+    createInfoMessage();
   } else if (data.length === 1) {
     createCountryInfoMarkup(data);
   } else {
@@ -71,12 +71,15 @@ function createCountryListMarkup(countriesList) {
   updateMarkup(markup, '');
 }
 
-function createInfoMessage(str) {
-  strTooMany = 'Too many matches found. Please enter a more specific name.';
+function createErrorMessage() {
   strErr = 'Oops, there is no country with that name';
-  Notify.failure('Qui timide rogat docet negare');
-  Notify.info('Cogito ergo sum');
-  console.log(str);
+  updateMarkup('', '');
+  Notify.failure(strErr);
+}
+function createInfoMessage() {
+  strTooMany = 'Too many matches found. Please enter a more specific name.';
+  updateMarkup('', '');
+  Notify.info(strTooMany);
 }
 
 function updateMarkup(countryListMarkup, countryInfoMarkup) {
