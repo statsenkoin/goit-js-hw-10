@@ -14,9 +14,12 @@ addStyles();
 searchBoxRef.addEventListener('input', debounce(onSearchInput, DEBOUNCE_DELAY));
 
 function onSearchInput(e) {
-  fetchCountries(e.target.value.trim())
-    .then(data => createMarkup(data))
-    .catch(error => createErrorMessage(error));
+  const inputStr = e.target.value.trim();
+  if (!inputStr) {
+    updateMarkup('', '');
+  } else {
+    fetchCountries(inputStr).then(createMarkup).catch(createErrorMessage);
+  }
 }
 
 function createMarkup(data) {
@@ -32,7 +35,6 @@ function createMarkup(data) {
 
 function createCountryInfoMarkup(country) {
   //   console.log('countryInfo :>> ', country);
-  countryListRef.innerHTML = '';
   const [
     {
       name: countryName,
@@ -52,12 +54,10 @@ function createCountryInfoMarkup(country) {
       <h2>Capital: <span>${capital}</span></h2>
       <h2>Population: <span>${population}</span></h2>
       <h2>Languages: <span>${langsStr}</span></h2>`;
-  countryInfoRef.innerHTML = markup;
+  updateMarkup('', markup);
 }
 
 function createCountryListMarkup(countriesList) {
-  countryInfoRef.innerHTML = '';
-
   const markup = countriesList
     .map(
       ({ name, flags: { svg } }) =>
@@ -67,7 +67,7 @@ function createCountryListMarkup(countriesList) {
         </li>`
     )
     .join('');
-  countryListRef.innerHTML = markup;
+  updateMarkup(markup, '');
 }
 
 function createErrorMessage(str) {
@@ -85,4 +85,9 @@ function addStyles() {
         span {font-weight: 400;}
     </style>`;
   document.head.insertAdjacentHTML('beforeend', extraStyles);
+}
+
+function updateMarkup(countryListMarkup, countryInfoMarkup) {
+  countryInfoRef.innerHTML = countryInfoMarkup;
+  countryListRef.innerHTML = countryListMarkup;
 }
