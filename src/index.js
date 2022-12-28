@@ -71,12 +71,13 @@ function createCountryListMarkup(countriesList) {
 }
 
 function createErrorMessage() {
-  strErr = 'Oops, there is no country with that name';
+  const strErr = 'Oops, there is no country with that name';
   updateMarkup('', '');
   Notify.failure(strErr);
 }
 function createInfoMessage() {
-  strTooMany = 'Too many matches found. Please enter a more specific name.';
+  const strTooMany =
+    'Too many matches found. Please enter a more specific name.';
   updateMarkup('', '');
   Notify.info(strTooMany);
 }
