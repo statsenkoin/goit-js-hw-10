@@ -22,18 +22,17 @@ function onSearchInput(e) {
   }
 }
 
-function createMarkup(data) {
-  if (data.length > 10) {
+function createMarkup(countriesArr) {
+  if (countriesArr.length > 10) {
     createInfoMessage();
-  } else if (data.length === 1) {
-    createCountryInfoMarkup(data);
+  } else if (countriesArr.length === 1) {
+    createCountryInfoMarkup(countriesArr);
   } else {
-    createCountryListMarkup(data);
+    createCountryListMarkup(countriesArr);
   }
 }
 
 function createCountryInfoMarkup(country) {
-  //   console.log('countryInfo :>> ', country);
   const [
     {
       name: countryName,
