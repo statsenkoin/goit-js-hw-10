@@ -76,11 +76,11 @@ function createErrorMessage(str) {
 
 function addStyles() {
   const extraStyles = `<style>
-        body {margin-left: 10px;}
+        body {margin: 10px;}
         h1 {display: inline}
         h2 {margin: 0;}
         ul {list-style: none;padding: 0}
-        li {display: flex;}
+        li {display: flex;padding: 5px}
         img {margin-right: 10px;}
         span {font-weight: 400;}
     </style>`;
