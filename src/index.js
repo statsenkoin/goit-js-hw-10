@@ -69,10 +69,16 @@ function createCountryListMarkup(countriesList) {
   updateMarkup(markup, '');
 }
 
-function createErrorMessage() {
+function createErrorMessage(error) {
   const strErr = 'Oops, there is no country with that name';
-  updateMarkup('', '');
-  Notify.failure(strErr);
+  // updateMarkup('', '');
+  // Notify.failure(strErr);
+
+  console.log('error :>> ', error.message);
+  if (error.message === '404') {
+    updateMarkup('', '');
+    Notify.failure(strErr);
+  }
 }
 function createInfoMessage() {
   const strTooMany =
